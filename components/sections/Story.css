@@ -1,0 +1,19 @@
+#voide-story {
+    padding: clamp(64px, 9vw, 120px) 0;
+    position: relative; z-index: 2;
+  }
+  #voide-story .story__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 7vw, 100px);
+    align-items: center;
+  }
+  #voide-story .story__content p {
+    color: var(--muted); font-size: 16px; line-height: 1.8; margin-bottom: 18px;
+  }
+  #voide-story .story__chips {
+    display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 28px;
+  }
+  @media (max-width: 860px) {
+    #voide-story .story__inner { grid-template-columns: 1fr; }
+  }

@@ -1,70 +1,62 @@
 # Notes for the owner
 
-What I found on voidescent.com while rebuilding it (checked 3 November 2026), what the rebuild does about
-each one, and a few things only you can decide.
+This repo started as a 1:1 copy of voidescent.com as it was on 3 November 2026 (checked in screenshots against the
+live site at desktop and phone width).
 
-## Things on the live site that disagree with each other
+## Changed since the copy
 
-1. **Bottle price.** Heavens and Descent product pages say €13,99. The home page, the shop page and Nebula say
-   €14,99. The rebuild uses €14,99 everywhere.
-2. **Bundle "was" price.** €44,97 on the home page and the Nebula pack picker, €41,97 on the bundle page and in
-   its search description. Savings show as €16,98 in one place and €13,98 in the other. The rebuild computes
-   both from the bottle price (3 × €14,99 = €44,97, so you save €16,98).
-3. **Belgium shipping.** Home, Nebula and About say €6,95, free from €40. Heavens, Descent and the bundle say
-   €4,95, free from €25, and the Heavens/Descent trust badge says "Free shipping €40+". The rebuild uses
-   €6,95 / free from €40. **Please confirm.**
-4. **"Free shipping" on the 3-pack.** At €27,99 it ships free in the Netherlands, but not to Belgium (€40),
-   Germany (€35) or France (€40). The rebuild says "ships free to ..." based on the shopper's chosen country.
-5. **Reviews.** Heavens and Descent show five stars and "12 reviews". Nebula shows "No reviews", and the review
-   widget shows zero everywhere. If those 12 reviews don't exist, they should come down: under EU consumer law
-   (the Omnibus rules, enforced in NL by the ACM) showing reviews you can't back up counts as misleading. The
-   rebuild shows no ratings until there are real ones.
-6. **Two product page templates.** Nebula and the bundle have the newer page (pack picker, FAQ, 4 photos).
-   Heavens and Descent still use the old one: single bottle only, no FAQ, one photo. The rebuild gives every
-   product the same page.
+- **Buying is switched off.** "Add to cart" and "Checkout" buttons are there but do nothing.
+- **Home page:** the bundle card is gone; the three scents sit side by side, all the same size, each with a small
+  box underneath (name, price, scent profile, add to cart). "How it works" is now a single step ending in
+  "It's that easy." The newsletter button that appears after closing the pop-up is now a vertical "Get notified" box on
+  the left edge.
+- **Product pages:** choosing the 3- or 6-bottle pack no longer picks scents for you. The three photos of a bottle
+  hanging in a car are removed (Nebula, Heavens, Descent).
+- **No pill shapes:** tags and note chips are plain text; badges and buttons have square-ish corners.
+- **Red stars:** hovering one (on a computer) makes it glow; clicking it stops it and opens the red star with the
+  STAR-25 text, which stays until you click somewhere else.
+- **Speed:** the hero glow, the red stars and the title shimmer now run on the graphics card instead of being
+  redrawn by script every frame, and invisible background blurs were removed.
+- **Fix:** the Shop page's product links (`/collections/scents/products/...`) gave "page not found"; they work now.
+- **Photos are copied into this repo** (`public/images/`), so closing the Shopify store won't take them down. Only
+  the Judge.me reviews section still depends on Shopify (it is a Shopify app).
+- **Pages are ready-made:** nothing on a page depends on the visitor any more (the cart number is gone), so pages
+  are built once and served as files instead of being rebuilt for every visit.
+- **Contact form spam trap:** the contact form now has the same hidden bot trap as the newsletter pop-up.
 
-## Broken or missing
+## What's copied
 
-7. **Footer logo** doesn't load on any page (the `.avif` file). The rebuild uses the header logo.
-8. **Share images are the wrong products.** When someone shares the Heavens page, the preview shows a light-blue
-   "sea salt + citrus + driftwood" bottle; Descent shows a pink "vanilla + floral" bottle. Fixed in the rebuild.
-9. **Bundle is missing from the Shop page** (`/collections/scents`). Added.
-10. **Home page product row is cut off** on a normal laptop screen (1440 px): the fourth card, Descent, is
-    clipped at the right edge, which reads as a mistake even if it's meant to scroll. The rebuild shows the
-    three scents in a row and the bundle as its own wide block.
-11. **"Our philosophy" has an empty right half.** The rebuild puts the trio photo there.
-12. **Breadcrumbs** link "Shop" to `/collections` on some pages and `/collections/scents` on others. Both now go
-    to the same place.
-13. **Footer** is missing the About link on Heavens and Descent.
-14. **iDEAL | Wero** appears on the bundle page but not on Nebula. For a Dutch shop it should be everywhere, and
-    first.
+- Home, Shop (`/collections/scents`), the four product pages, About, Contact, the cart page, search, 404, the six
+  policies, `/pages/scents`, `/pages/legal-notice` and the blog articles.
+- The cart drawer (empty, since buying is off), bundle tip, free-shipping bar, upsell, pack picker (1, 3 or 6 bottles), sticky add-to-cart bar,
+  delivery estimate, announcement bar, newsletter pop-up, the hero animation and the red-star easter egg.
+- The Judge.me review widget, which still loads from Judge.me.
+- The store's two automatic discounts in the cart code (unused while buying is off).
 
-## Smaller things
+## Works differently, because Shopify isn't behind the pages any more
 
-15. **Bundle fragrance notes** list Nebula as "top", Heavens as "heart" and Descent as "base". Those words
-    describe layers of one scent, so the rebuild lists each scent's own notes instead.
-16. **Page titles repeat the brand**, e.g. "Heavens | Sandalwood Car Air Freshener | Voidescent – VOIDESCENT".
-17. **Image file names** like `ChatGPTImageMay13_2026...png` and `nebUntitled.png`, and empty alt text on
-    thumbnails. Renaming files and writing alt text helps Google Images and screen readers. The rebuild writes
-    alt text for every photo.
-18. **The hero headline** is an outlined script that's hard to read, especially on phones.
+- **Contact form and newsletter pop-up** send their fields to `CONTACT_WEBHOOK_URL`. Before, Shopify emailed you
+  contact messages and saved newsletter sign-ups as customers with marketing consent. Until the webhook is set,
+  both forms answer "not connected yet".
+- **The message after a contact form is sent** uses Shopify's standard wording. The live one couldn't be checked
+  without sending you a real message.
+- **Search** uses simple word matching over products, pages and article titles and intros. Searching a scent
+  name gives the same results as the live store; other searches can differ, because Shopify's search engine
+  can't be copied.
 
-## What else the rebuild adds
+## Not copied yet
 
-- One source of truth for prices and shipping, so 1–4 can't happen again.
-- Pick-your-scents boxes on every product page, pre-filled one of each, with "Pick 1 more" until the box is full.
-- A cart drawer with a free-shipping meter per country, a country selector and a discount code field.
-- An estimated delivery date on product pages.
-- A sticky "Add" bar on phones once you scroll past the main button.
-- Product structured data for Google (price, availability, brand). No star ratings until reviews are real.
-- The newsletter sign-up as a section on the page instead of a pop-up.
-- Same URLs as the current shop, so links and rankings carry over.
+- **Dutch, German and French.** The live store also exists at `/nl`, `/de` and `/fr` (Shopify Translate &
+  Adapt). Only the English site is copied. Adding the three languages means translated copy for every section
+  plus language routing.
+- **Shopify platform extras:** analytics and pixels, Shop Pay / Shop app sign-in, `agents.md` and the store's
+  AI-shopping endpoint (UCP). These are Shopify features, not theme features.
 
-## Questions for you
+## Odd things on the live site (copied as they are)
 
-- Are €14,99 / €27,99 / €44,97 the right prices?
-- Which Belgium shipping rate is right?
-- How are the 3 and 6 boxes set up in Shopify: variants on the bundle product, or a bundle app?
-- Is "voide" (on the bottles) the product line and "Voidescent" the company, or should one name win?
-- Do you want to keep the fonts the rebuild uses (Bodoni Moda + Jost), or go back to the current ones?
-- Which tool do you use, or want, for the newsletter and for reviews?
+1. `/collections` is an empty page: the theme has no template for a list of collections.
+2. The contact form's name and message fields are called `contact[Translation missing: en.templates.contact.form.name]`
+   and `...form.comment]`. Those names show up as labels in the messages you receive.
+3. The hero bottle photo's alt text is HTML code: `<p>May <em>your</em> space have a scent</p>`.
+4. The blog has no index page: `/blogs/nieuws` returns "page not found". Articles are reachable only through search,
+   the sitemap and Google.

@@ -1,13 +1,7 @@
-import Link from "next/link";
+import NotFound from "@/components/sections/NotFound";
 
-export default function NotFound() {
-  return (
-    <div className="wrap not-found">
-      <h1>Lost in the void</h1>
-      <p>This page doesn&rsquo;t exist, or it moved.</p>
-      <Link href="/collections/scents" className="button">
-        Shop the scents
-      </Link>
-    </div>
-  );
+export const metadata = { title: "404 Not Found" };
+
+export default function NotFoundPage() {
+  return <NotFound />;
 }

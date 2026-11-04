@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
-import { IS_PREVIEW, SITE } from "@/lib/site";
 
-// Preview deployments stay out of search results so they never compete with the live shop.
+// Stays out of search results until this replaces the Shopify storefront (NEXT_PUBLIC_PREVIEW=false).
 export default function robots(): MetadataRoute.Robots {
-  if (IS_PREVIEW) return { rules: { userAgent: "*", disallow: "/" } };
+  if (process.env.NEXT_PUBLIC_PREVIEW !== "false") return { rules: { userAgent: "*", disallow: "/" } };
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/cart", "/api/"] },
-    sitemap: `${SITE.url}/sitemap.xml`,
+    sitemap: "https://voidescent.com/sitemap.xml",
   };
 }

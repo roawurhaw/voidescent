@@ -1,15 +1,9 @@
-import type { Metadata } from "next";
-import { CartContents } from "@/components/CartContents";
+import CartPage from "@/components/sections/CartPage";
+import { cartJson, readCart } from "@/lib/cart";
+import { pageMeta } from "@/lib/meta";
 
-export const metadata: Metadata = { title: "Cart", robots: { index: false } };
+export const metadata = pageMeta({ title: "Your Shopping Cart", path: "/cart" });
 
-export default function CartPage() {
-  return (
-    <div className="wrap page">
-      <div className="cart-page">
-        <h1>Your cart</h1>
-        <CartContents />
-      </div>
-    </div>
-  );
+export default async function Cart() {
+  return <CartPage cart={cartJson(await readCart())} />;
 }

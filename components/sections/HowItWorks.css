@@ -1,0 +1,58 @@
+#voide-how {
+    padding: clamp(64px, 9vw, 120px) 0;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    opacity: 0.95;
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(255,255,255,0.035) 0%,
+        rgba(255,255,255,0.02) 35%,
+        rgba(255,255,255,0.008) 60%,
+        transparent 80%
+      );
+  }
+  /* ambient fade glow */
+  #voide-how::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(255,0,52,0.04),
+        transparent 60%
+      );
+    filter: blur(90px);
+    opacity: 0.9;
+  }
+  #voide-how .voide-page-width {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  #voide-how .how__step {
+    margin-top: 28px;
+  }
+  #voide-how .how__step h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  #voide-how .how__step p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+    max-width: 46ch;
+    margin: 0 auto;
+  }
+  #voide-how .how__step .how__easy {
+    margin-top: 18px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--fg);
+  }

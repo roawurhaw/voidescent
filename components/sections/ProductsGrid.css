@@ -1,0 +1,62 @@
+#voide-products {
+    padding: clamp(64px, 9vw, 120px) 0;
+    position: relative; z-index: 2;
+  }
+  #voide-products .prod__head { margin-bottom: 44px; }
+  /* Three equal cards side by side. Flat: no shadows, no lift. */
+  #voide-products .prod__row {
+    display: flex; justify-content: center;
+    position: relative;
+  }
+  #voide-products .pcard {
+    flex: 0 1 340px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  #voide-products .pcard__media {
+    display: block; aspect-ratio: 4 / 5; overflow: hidden;
+    background: var(--bg2); border-radius: 4px;
+  }
+  #voide-products .pcard__media img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    transition: transform .4s ease;
+  }
+  #voide-products .pcard__media:hover img { transform: scale(1.04); }
+  #voide-products .pcard__box {
+    background: var(--panel2);
+    border: 1px solid var(--stroke);
+    border-radius: 4px;
+    padding: 14px 16px 16px;
+  }
+  #voide-products .pcard__top {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  #voide-products .pcard__name {
+    font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.15;
+  }
+  #voide-products .pcard__name a { color: inherit; text-decoration: none; }
+  #voide-products .pcard__price { font-size: 16px; font-weight: 700; white-space: nowrap; }
+  #voide-products .pcard__desc {
+    font-size: 13px; color: var(--muted); line-height: 1.55;
+    margin: 4px 0 12px;
+  }
+  #voide-products .pcard__cta {
+    display: block; width: 100%;
+    background: var(--accent); color: #fff; border: 0;
+    font-weight: 700; font-size: 13px;
+    border-radius: 4px; padding: 11px 16px;
+    transition: filter .18s;
+  }
+  #voide-products .pcard__cta:hover { filter: brightness(1.1); }
+  /* Phones: a swipeable row that opens on the middle card, with the others peeking in. */
+  @media (max-width: 760px) {
+    #voide-products .prod__row {
+      justify-content: flex-start;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin-inline: calc(var(--page-pad) * -1);
+      padding-inline: 14vw;
+    }
+    #voide-products .prod__row::-webkit-scrollbar { display: none; }
+    #voide-products .pcard { flex: 0 0 72vw; scroll-snap-align: center; }
+  }

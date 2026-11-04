@@ -1,0 +1,128 @@
+#voide-contact {
+    padding: clamp(64px, 9vw, 120px) 0;
+    position: relative; z-index: 2;
+  }
+  #voide-contact .contact__inner {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--panel2, rgba(14, 15, 18, 0.6));
+    border: 1px solid var(--stroke, rgba(255, 255, 255, 0.1));
+    border-radius: 20px;
+    padding: clamp(32px, 5vw, 56px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  #voide-contact .contact__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  #voide-contact .contact__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 36px);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--fg, #fff);
+  }
+  #voide-contact .contact__sub {
+    color: var(--muted, #888);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 40ch;
+    margin: 0 auto;
+  }
+  #voide-contact .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  #voide-contact .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) {
+    #voide-contact .form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+  #voide-contact .form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  #voide-contact label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted, #888);
+    font-weight: 600;
+  }
+  #voide-contact input,
+  #voide-contact textarea {
+    width: 100%;
+    background: var(--bg2, rgba(0, 0, 0, 0.3));
+    border: 1px solid var(--stroke, rgba(255, 255, 255, 0.1));
+    color: var(--fg, #fff);
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #voide-contact input:focus,
+  #voide-contact textarea:focus {
+    outline: none;
+    border-color: var(--accent, #ff0034);
+    box-shadow: 0 0 0 3px rgba(255,0,52,0.15);
+  }
+  #voide-contact textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+  #voide-contact .form__submit {
+    background: var(--accent, #ff0034);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.2s;
+    box-shadow: 0 4px 15px rgba(255,0,52,0.2);
+    margin-top: 8px;
+  }
+  #voide-contact .form__submit:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,0,52,0.4);
+  }
+  /* Form Message States */
+  #voide-contact .form__status {
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  #voide-contact .form__status--success {
+    background: rgba(0, 182, 122, 0.1);
+    color: #00B67A;
+    border: 1px solid rgba(0, 182, 122, 0.3);
+  }
+  /* Business details (KvK) */
+  #voide-contact .contact__details {
+    margin-top: 32px; padding-top: 24px;
+    border-top: 1px solid var(--stroke, rgba(255, 255, 255, 0.1));
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px;
+    font-size: 14px; line-height: 1.6; color: var(--muted, #888);
+  }
+  #voide-contact .contact__details p { margin: 0; }
+  #voide-contact .contact__details-title { grid-column: 1 / -1; color: var(--fg, #fff); font-weight: 700; font-size: 12px; letter-spacing: .12em; }
+  #voide-contact .contact__details a { color: var(--fg, #fff); text-decoration: none; }
+  #voide-contact .contact__details a:hover { color: var(--accent, #ff0034); }
+  @media (max-width: 600px) {
+    #voide-contact .contact__details { grid-template-columns: 1fr; }
+  }

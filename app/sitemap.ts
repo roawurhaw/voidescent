@@ -1,11 +1,19 @@
 import type { MetadataRoute } from "next";
-import { ALL_PRODUCTS } from "@/lib/catalog";
-import { SITE } from "@/lib/site";
+import { ARTICLES } from "@/lib/blog";
+import { PRODUCTS } from "@/lib/catalog";
+import { PAGES } from "./pages/[handle]/pages";
+import { POLICIES } from "./policies/[slug]/policies";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/collections/scents", "/pages/about", "/pages/contact"];
-  return [
-    ...pages.map((p) => ({ url: `${SITE.url}${p}` })),
-    ...ALL_PRODUCTS.map((p) => ({ url: `${SITE.url}/products/${p.handle}` })),
+  const paths = [
+    "",
+    "/collections/scents",
+    "/pages/about",
+    "/pages/contact",
+    ...PRODUCTS.map((p) => `/products/${p.handle}`),
+    ...Object.keys(PAGES).map((handle) => `/pages/${handle}`),
+    ...Object.keys(POLICIES).map((slug) => `/policies/${slug}`),
+    ...ARTICLES.map((a) => `/blogs/nieuws/${a.handle}`),
   ];
+  return paths.map((p) => ({ url: `https://voidescent.com${p}` }));
 }

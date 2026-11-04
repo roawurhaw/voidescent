@@ -1,0 +1,159 @@
+#voide-hero {
+    position: relative;
+    min-height: calc(100vh - 64px);
+    display: flex; align-items: center;
+    padding: clamp(48px,7vw,96px) 0 clamp(48px,6vw,80px);
+    overflow: hidden;
+  }
+  /* Drifting red glow (blobs added by hero.js) & particles background */
+  #vs-fluid {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+  }
+  #vs-fluid .vs-blob {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle closest-side, rgba(255,0,52,0.12), rgba(255,0,52,0.05) 40%, rgba(255,0,52,0));
+  }
+  #voide-hero .vs-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.14;
+    background-image: radial-gradient(var(--accent, #ff0034) 1px, transparent 1px);
+    background-size: 180px 180px;
+    animation: vsDrift 18s linear infinite;
+    z-index: 0;
+  }
+  #voide-hero::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 60% 50%, rgba(255,0,52,.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  #voide-hero .hero__inner {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: clamp(32px,6vw,80px);
+    align-items: center;
+    width: 100%;
+  }
+  #voide-hero .hero__eyebrow {
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  #voide-hero .hero__eyebrow::before {
+    content: ''; display: block;
+    width: 28px; height: 1px; background: var(--accent); flex-shrink: 0;
+  }
+  #voide-hero .hero__title {
+    margin-bottom: 20px;
+  }
+  /* SVG Text Animation */
+  .vs-svg-wrap {
+    width: 100%;
+    max-width: 600px;
+    display: block;
+    animation: vsIdle 5s ease-in-out infinite;
+    animation-delay: 3.5s;
+  }
+  .vs-svg-wrap svg {
+    width: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 10px 15px rgba(255,0,52,0.12));
+  }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0;
+    margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0);
+    white-space: nowrap; border-width: 0;
+  }
+  #voide-hero .hero__sub {
+    color: var(--muted);
+    font-size: clamp(15px,1.5vw,18px);
+    max-width: 46ch;
+    line-height: 1.75;
+    margin-bottom: 36px;
+  }
+  #voide-hero .hero__actions {
+    display: flex; align-items: center;
+    gap: 20px; flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  /* Media side */
+  #voide-hero .hero__media {
+    position: relative;
+    display: flex; justify-content: center;
+  }
+  #voide-hero .hero__media::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 70%; height: 70%;
+    background: radial-gradient(circle, rgba(255,0,52,.2) 0%, transparent 70%);
+    filter: blur(60px);
+    z-index: 0; pointer-events: none;
+  }
+  #voide-hero .hero__float {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    animation: voideFloat 6s ease-in-out infinite;
+  }
+  #voide-hero .hero__media img {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 20px;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,.7));
+  }
+  /* Keyframes */
+  @keyframes voideFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-14px); }
+  }
+  @keyframes vsIdle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-4px) scale(1.01); }
+  }
+  @keyframes vsWrite {
+    0%   { stroke-dashoffset: 1000; opacity: 0; }
+    6%   { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes vsLine1 {
+    0%   { stroke-dashoffset: 900; opacity: 0; }
+    4%   { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes vsLine2 {
+    0%   { stroke-dashoffset: 60; opacity: 0; }
+    10%  { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes vsDrift {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-120px); }
+  }
+  @media (max-width: 860px) {
+    #voide-hero .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    #voide-hero .hero__media {
+      display: none;
+    }
+  }
+
+ @media (max-width: 860px) {#shopify-section-voide_hero .hero__media {display: block !important; order: -1; margin: 0 auto; } #shopify-section-voide_hero .hero__media img {max-height: 28vh; width: auto; margin: 0 auto; }}

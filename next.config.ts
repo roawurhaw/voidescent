@@ -1,19 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images: {
-    // Product photos stay on the Shopify CDN. Shopify resizes them itself
-    // (via ?width=), so we don't need Next's image optimizer at all.
-    loader: "custom",
-    loaderFile: "./lib/image-loader.ts",
-  },
-  async redirects() {
-    // Shopify served the shop under a few URLs. Keep them all working.
-    return [
-      { source: "/collections", destination: "/collections/scents", permanent: true },
-      { source: "/collections/all", destination: "/collections/scents", permanent: true },
-      { source: "/products/voidegrail-bundle", destination: "/products/scent-maxxing", permanent: false },
-    ];
+  // The theme scripts in public/theme are plain DOM scripts written for one run per page load.
+  reactStrictMode: false,
+  agentRules: false,
+  // Blog article bodies are read from disk at request time; ship them with the server build.
+  outputFileTracingIncludes: { "/blogs/nieuws/[handle]": ["./content/blog/**"], "/search": ["./content/blog/**"] },
+  async rewrites() {
+    // Shopify also serves every product inside its collection (/collections/scents/products/<handle>); the Shop page links there.
+    return [{ source: "/collections/:collection/products/:handle", destination: "/products/:handle" }];
   },
 };
 

@@ -1,170 +1,115 @@
-// The catalogue: every product, price and pack in one typed file.
-// Prices, savings and per-bottle amounts are all computed from here.
-import { IMAGES, type Img } from "./images";
+// Products as they are set up in the live Shopify store (ids, prices in cents). Photos are in public/images.
+// The product pages, the cart and checkout all read from here.
 
-export type ScentHandle = "nebula" | "heavens" | "descent";
-export const SCENT_ORDER: ScentHandle[] = ["nebula", "heavens", "descent"];
+// Images are copied from the Shopify store into public/images, so they outlive it. Next's image optimizer
+// (/_next/image) resizes them and serves WebP/AVIF; it only accepts its own widths, so round up to one of those.
+const WIDTHS = [32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840];
+export const image = (src: string, width: number) =>
+  `/_next/image?url=${encodeURIComponent(src)}&w=${WIDTHS.find((w) => w >= width) ?? 3840}&q=75`;
+export const photo = (file: string, width: number) => image(`/images/${file}`, width);
 
-export type PackId = "single" | "trio" | "six";
+export type Photo = { file: string; alt: string; width: number; height: number };
 
-export type Pack = {
-  id: PackId;
-  label: string;
-  size: number;
-  price: number; // cents
-  badge?: string;
-};
-
-/** Price of one bottle, in cents. */
-export const UNIT_PRICE = 1499;
-
-export const PACKS: Record<PackId, Pack> = {
-  single: { id: "single", label: "1 bottle", size: 1, price: UNIT_PRICE },
-  trio: { id: "trio", label: "3 bottles", size: 3, price: 2799, badge: "Popular" },
-  six: { id: "six", label: "6 bottles", size: 6, price: 4497, badge: "Buy 3, get 3 free" },
-};
-
-export const packFullPrice = (p: Pack) => p.size * UNIT_PRICE;
-export const packSavings = (p: Pack) => packFullPrice(p) - p.price;
-export const packPerBottle = (p: Pack) => Math.round(p.price / p.size);
-
-export type FragranceNotes = { top: string; heart: string; base: string };
-
-export type Scent = {
-  kind: "scent";
-  handle: ScentHandle;
-  name: string;
-  family: string;
-  /** One line, shown under the name. */
+export type Product = {
+  handle: string;
+  productId: number;
+  variantId: number;
+  title: string;
+  price: number;
+  sku?: string;
   tagline: string;
-  description: string;
-  notes: FragranceNotes;
-  /** CSS colour of the oil in the bottle. Used for swatches and accents. */
-  oil: string;
-  images: Img[];
-  seo: { title: string; description: string };
-};
-
-export type Bundle = {
-  kind: "bundle";
-  handle: "scent-maxxing";
-  name: string;
   family: string;
-  tagline: string;
+  notes: [top: string, heart: string, base: string];
+  defaultPack: "single" | "six";
+  photos: Photo[];
+  seoTitle: string;
   description: string;
-  packs: PackId[];
-  images: Img[];
-  seo: { title: string; description: string };
 };
 
-export type Product = Scent | Bundle;
-
-export const SCENTS: Record<ScentHandle, Scent> = {
-  nebula: {
-    kind: "scent",
+export const PRODUCTS: Product[] = [
+  {
     handle: "nebula",
-    name: "Nebula",
-    family: "Floral",
+    productId: 15252642103680,
+    variantId: 56292109156736,
+    title: "Nebula",
+    price: 1499,
+    sku: "VS-NEBULA",
     tagline: "Soft, floral and clean.",
+    family: "Floral",
+    notes: ["Bright and fresh", "Soft florals", "Clean and smooth"],
+    defaultPack: "single",
+    photos: [
+      { file: "nebUntitled.jpg", alt: "Nebula", width: 1122, height: 1402 },
+      { file: "nebula3.jpg", alt: "Nebula", width: 1122, height: 1402 },
+      { file: "nebula2.jpg", alt: "Nebula", width: 1122, height: 1402 },
+    ],
+    seoTitle: "Nebula | Floral Car Air Freshener | Voidescent",
     description:
-      "Nebula is our floral. Soft petals with a clean, bright edge: light enough for every day, present enough to notice when you get in.",
-    notes: { top: "Bright and fresh", heart: "Soft florals", base: "Clean and smooth" },
-    oil: "var(--oil-nebula)",
-    images: [IMAGES.nebulaCard, IMAGES.nebulaCar, IMAGES.nebulaMarble, IMAGES.nebulaRoses],
-    seo: {
-      title: "Nebula, floral car fragrance",
-      description:
-        "Nebula, a soft floral car fragrance. 8 ml fragrance oil in a glass bottle with a wooden cap. Lasts 4–6 weeks.",
-    },
+      "Nebula, a soft floral car fragrance by Voidescent. 8 ml fragrance oil in a glass bottle with a wooden cap. Lasts 4–6 weeks. Free shipping NL from €25, BE from €40.",
   },
-  heavens: {
-    kind: "scent",
+  {
     handle: "heavens",
-    name: "Heavens",
-    family: "Woody",
+    productId: 15255500718464,
+    variantId: 56306800001408,
+    title: "Heavens",
+    price: 1499,
+    sku: "VS-HEAVENS",
     tagline: "Creamy sandalwood, calm and warm.",
+    family: "Woody",
+    notes: ["Soft wood", "Sandalwood", "Creamy and warm"],
+    defaultPack: "single",
+    photos: [
+      { file: "heavensUntitled.jpg", alt: "Heavens", width: 1086, height: 1448 },
+      { file: "heavens3.jpg", alt: "Heavens car fragrance bottle with sandalwood, vanilla pods and white flowers", width: 1122, height: 1402 },
+      { file: "heavens1.jpg", alt: "Heavens car fragrance bottle among sandalwood pieces and soft smoke", width: 1122, height: 1402 },
+    ],
+    seoTitle: "Heavens | Sandalwood Car Air Freshener | Voidescent",
     description:
-      "Heavens is our woody one. Creamy sandalwood, smooth and warm, calm like a clear night sky.",
-    notes: { top: "Soft wood", heart: "Sandalwood", base: "Creamy and warm" },
-    oil: "var(--oil-heavens)",
-    images: [IMAGES.heavensCard],
-    seo: {
-      title: "Heavens, sandalwood car fragrance",
-      description:
-        "Heavens, a creamy sandalwood car fragrance. 8 ml fragrance oil in a glass bottle with a wooden cap. Lasts 4–6 weeks.",
-    },
+      "Heavens, a creamy sandalwood car fragrance by Voidescent. 8 ml fragrance oil in a glass bottle with a wooden cap. Lasts 4–6 weeks. Free shipping NL from €25, BE from €40.",
   },
-  descent: {
-    kind: "scent",
+  {
     handle: "descent",
-    name: "Descent",
-    family: "Sweet and warm",
+    productId: 15255499866496,
+    variantId: 56306798756224,
+    title: "Descent",
+    price: 1499,
+    sku: "VS-DESCENT",
     tagline: "Sweet, dark and a little addictive.",
+    family: "Sweet and warm",
+    notes: ["Coffee", "White flowers", "Vanilla"],
+    defaultPack: "single",
+    photos: [
+      { file: "descentUntitled.jpg", alt: "Descent", width: 1122, height: 1402 },
+      { file: "descent2.jpg", alt: "Descent car fragrance bottle with coffee beans, vanilla pods and white flowers", width: 1122, height: 1402 },
+      { file: "descent4.jpg", alt: "Descent car fragrance bottle with flying coffee beans, vanilla and white flowers", width: 1122, height: 1402 },
+    ],
+    seoTitle: "Descent | Coffee & Vanilla Car Air Freshener | Voidescent",
     description:
-      "Descent is the dark one. Coffee and vanilla wrapped around white flowers: sweet, warm and a little addictive.",
-    notes: { top: "Coffee", heart: "White flowers", base: "Vanilla" },
-    oil: "var(--oil-descent)",
-    images: [IMAGES.descentCard],
-    seo: {
-      title: "Descent, coffee and vanilla car fragrance",
-      description:
-        "Descent, a sweet coffee and vanilla car fragrance. 8 ml fragrance oil in a glass bottle with a wooden cap. Lasts 4–6 weeks.",
-    },
+      "Descent, a sweet coffee-vanilla car fragrance by Voidescent. 8 ml fragrance oil, glass bottle, wooden cap. Lasts 4–6 weeks. Free shipping NL from €25, BE from €40.",
   },
-};
-
-export const BUNDLE: Bundle = {
-  kind: "bundle",
-  // Kept for SEO: this is the URL Shopify already serves.
-  handle: "scent-maxxing",
-  name: "Voidegrail Bundle",
-  family: "Floral, woody and sweet",
-  tagline: "All three scents in one box.",
-  description:
-    "Nebula, Heavens and Descent together. Switch with your mood, or keep one in every car. Each bottle comes with its wooden diffuser cap and hanging cord.",
-  packs: ["trio", "six"],
-  images: [IMAGES.bundleOrbit, IMAGES.trio, IMAGES.trioTop],
-  seo: {
-    title: "Voidegrail Bundle, all three car fragrances",
+  {
+    handle: "scent-maxxing",
+    productId: 15316321436032,
+    variantId: 56489971220864,
+    title: "Voidegrail Bundle — All 3 Scents",
+    price: 2799,
+    tagline: "All three scents in one box.",
+    family: "Floral, woody and sweet",
+    notes: ["Nebula: floral", "Heavens: sandalwood", "Descent: coffee and vanilla"],
+    defaultPack: "six",
+    photos: [{ file: "productpicturepng.jpg", alt: "Voidegrail Bundle — All 3 Scents", width: 1122, height: 1402 }],
+    seoTitle: "Voidegrail Bundle — All 3 Scents – VOIDESCENT",
     description:
-      "All three Voidescent car fragrances in one box: Nebula, Heavens and Descent. 3 × 8 ml fragrance oil, each lasting 4–6 weeks.",
-  },
-};
-
-export const ALL_PRODUCTS: Product[] = [...SCENT_ORDER.map((h) => SCENTS[h]), BUNDLE];
-
-export function getProduct(handle: string): Product | undefined {
-  return ALL_PRODUCTS.find((p) => p.handle === handle);
-}
-
-export function isScentHandle(value: string): value is ScentHandle {
-  return (SCENT_ORDER as string[]).includes(value);
-}
-
-/** Facts that are the same for every bottle. */
-export const BOTTLE = {
-  volume: "8 ml",
-  format: "8 ml glass bottle with wooden diffuser cap",
-  longevity: "4–6 weeks",
-  use: "Rear-view mirror, visor, anywhere in the car",
-  origin: "Designed in the Netherlands",
-  ingredients: "Fragrance oil. Keep away from children and pets. Keep the oil off your dashboard, paint and plastic.",
-  howTo:
-    "Take off the cap, pull out the plug and put the cap back on. Hang it from your mirror and tilt the bottle for 2–3 seconds so the wooden cap soaks up the oil. Tilt again whenever you want it stronger.",
-} as const;
-
-export const FAQ: { q: string; a: string }[] = [
-  {
-    q: "How strong is the scent?",
-    a: "You control it. Tilt the bottle for 2–3 seconds so the wooden cap soaks up more oil whenever you want it stronger.",
-  },
-  { q: "How long does one bottle last?", a: "4–6 weeks, depending on how often you tilt it." },
-  {
-    q: "Is it safe for my car?",
-    a: "Yes, as long as the oil doesn't touch your dashboard, paint or plastic, because it can leave marks. Keep it away from children and pets.",
-  },
-  {
-    q: "Which scent should I choose?",
-    a: "Nebula is soft and floral, Heavens is creamy sandalwood and Descent is sweet coffee and vanilla. Can't decide? Get all three in the bundle.",
+      "All three scents in one box: Nebula (floral), Heavens (sandalwood) and Descent (coffee and vanilla). Switch with your mood, or keep one in every car. In the box: 3 bottles of 8 ml fragrance oil, each with a wooden diffuser cap and hanging cord Lasts: 4–6 weeks per bottle — months of scent Price: €27,99 for all three (€",
   },
 ];
+
+// Collection order in Shopify; the box picker lists the current scent first, then these.
+export const SCENT_ORDER = ["heavens", "descent", "nebula"];
+
+export const productByHandle = (handle: string) => PRODUCTS.find((p) => p.handle === handle);
+export const productByVariant = (id: number) => PRODUCTS.find((p) => p.variantId === id);
+
+// "€14,99", the store's money format (amount_with_comma_separator).
+export const money = (cents: number) =>
+  "€" + (cents / 100).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");

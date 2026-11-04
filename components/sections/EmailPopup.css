@@ -1,0 +1,267 @@
+#emailpop {
+      --ep-accent: #ff0034;
+      --ep-bg: #050505;
+      --ep-card: #090909;
+      --ep-card-2: #111111;
+      --ep-fg: #f4eee9;
+      --ep-muted: rgba(244, 238, 233, 0.62);
+      --ep-soft: rgba(244, 238, 233, 0.1);
+      --ep-stroke: rgba(244, 238, 233, 0.12);
+      --ep-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
+      font-family: inherit;
+    }
+    #emailpop .ep__modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+    #emailpop .ep__modal[hidden] {
+      display: none;
+    }
+    #emailpop .ep__backdrop {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--ep-accent) 18%, transparent), transparent 32%),
+        rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 260ms ease;
+    }
+    #emailpop .ep__panel {
+      position: relative;
+      z-index: 1;
+      width: min(94vw, 850px);
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      overflow: hidden;
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015)),
+        var(--ep-card);
+      border: 1px solid var(--ep-stroke);
+      box-shadow: var(--ep-shadow);
+      transform: translateY(18px) scale(0.985);
+      opacity: 0;
+      transition: transform 260ms ease, opacity 260ms ease;
+    }
+    #emailpop .ep__panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent, color-mix(in srgb, var(--ep-accent) 34%, transparent), transparent) top / 100% 1px no-repeat,
+        radial-gradient(circle at 76% 12%, color-mix(in srgb, var(--ep-accent) 18%, transparent), transparent 28%);
+    }
+    #emailpop .ep__modal.open .ep__panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    #emailpop .ep__modal.open .ep__backdrop {
+      opacity: 1;
+    }
+    #emailpop .ep__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid var(--ep-stroke);
+      background: rgba(5, 5, 5, 0.72);
+      color: var(--ep-fg);
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+    #emailpop .ep__close:hover {
+      transform: rotate(90deg);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: color-mix(in srgb, var(--ep-accent) 65%, white 0%);
+    }
+    #emailpop .ep__media {
+      position: relative;
+      min-height: 520px;
+      background: #050505;
+      overflow: hidden;
+    }
+    #emailpop .ep__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+    }
+    #emailpop .ep__media-shade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 50%, rgba(5,5,5,0.78)),
+        radial-gradient(circle at 50% 50%, transparent, rgba(0,0,0,0.52));
+    }
+    #emailpop .ep__body {
+      position: relative;
+      padding: clamp(34px, 5vw, 58px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 520px;
+      color: var(--ep-fg);
+    }
+    #emailpop .ep__logo {
+      display: block;
+      width: auto;
+      max-width: 155px;
+      max-height: 58px;
+      object-fit: contain;
+      margin: 0 0 30px;
+    }
+    #emailpop .ep__eyebrow {
+      margin: 0 0 12px;
+      color: var(--ep-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    #emailpop .ep__title {
+      margin: 0;
+      max-width: 460px;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      color: var(--ep-fg);
+      font-weight: 600;
+    }
+    #emailpop .ep__sub {
+      margin: 18px 0 0;
+      max-width: 440px;
+      color: var(--ep-muted);
+      font-size: 15.5px;
+      line-height: 1.75;
+    }
+    #emailpop .ep__form {
+      margin-top: 28px;
+      display: flex;
+      gap: 10px;
+      padding: 6px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid var(--ep-stroke);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    #emailpop .ep__input {
+      flex: 1;
+      min-width: 0;
+      height: 48px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ep-fg);
+      padding: 0 16px;
+      font-size: 14px;
+    }
+    #emailpop .ep__input::placeholder {
+      color: rgba(244, 238, 233, 0.38);
+    }
+    #emailpop .ep__btn {
+      height: 48px;
+      border-radius: 8px;
+      border: 0;
+      padding: 0 22px;
+      cursor: pointer;
+      color: #fff;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--ep-accent) 92%, white 8%), var(--ep-accent));
+      font-weight: 850;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--ep-accent) 34%, transparent);
+      transition: transform 180ms ease, filter 180ms ease;
+      white-space: nowrap;
+    }
+    #emailpop .ep__btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+    #emailpop .ep__fine {
+      margin: 14px 0 0;
+      color: rgba(244, 238, 233, 0.42);
+      font-size: 11.5px;
+      line-height: 1.6;
+    }
+    /* A vertical box attached to the left edge of the window, text reading upwards. */
+    #emailpop .ep__reopen {
+      position: fixed;
+      left: 0;
+      bottom: 18px;
+      z-index: 2147483647;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      border: 1px solid var(--ep-stroke);
+      border-right: 0;
+      border-radius: 8px 0 0 8px;
+      padding: 16px 12px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03)),
+        rgba(5, 5, 5, 0.86);
+      color: var(--ep-fg);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: border-color 180ms ease, opacity 180ms ease;
+    }
+    #emailpop .ep__reopen[hidden] {
+      display: none;
+    }
+    #emailpop .ep__reopen:hover {
+      border-color: color-mix(in srgb, var(--ep-accent) 70%, white 0%);
+    }
+    @media (max-width: 900px) {
+      #emailpop .ep__panel {
+        grid-template-columns: 1fr;
+        width: min(94vw, 520px);
+      }
+      #emailpop .ep__media {
+        display: none;
+      }
+      #emailpop .ep__body {
+        min-height: auto;
+        padding: 42px 24px 28px;
+      }
+      #emailpop .ep__title {
+        font-size: clamp(30px, 11vw, 44px);
+      }
+    }
+    @media (max-width: 520px) {
+      #emailpop .ep__form {
+        border-radius: 18px;
+        flex-direction: column;
+        padding: 8px;
+      }
+      #emailpop .ep__input {
+        width: 100%;
+      }
+      #emailpop .ep__btn {
+        width: 100%;
+      }
+      #emailpop .ep__reopen {
+        bottom: 12px;
+        padding: 14px 11px;
+      }
+    }

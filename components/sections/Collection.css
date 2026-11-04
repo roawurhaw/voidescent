@@ -1,0 +1,112 @@
+#voide-collection {
+    padding: clamp(64px, 9vw, 120px) 0;
+    position: relative; z-index: 2;
+  }
+  /* Collection Header */
+  #voide-collection .coll__header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 64px;
+    position: relative;
+  }
+  #voide-collection .coll__header::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,0,52,.15) 0%, transparent 70%);
+    pointer-events: none; z-index: -1;
+  }
+  #voide-collection .coll__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--fg);
+  }
+  #voide-collection .coll__desc {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  /* Grid Layout */
+  #voide-collection .prod__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  /* Sleek Product Card */
+  #voide-collection .pcard {
+    background: var(--panel2);
+    border: 1px solid var(--stroke);
+    border-radius: 20px; overflow: hidden;
+    position: relative;
+    transition: border-color .25s, transform .25s;
+    display: flex; flex-direction: column;
+  }
+  #voide-collection .pcard:hover {
+    border-color: rgba(255,0,52,.3);
+    transform: translateY(-4px);
+  }
+  #voide-collection .pcard__media {
+    aspect-ratio: 4 / 5; overflow: hidden;
+    background: var(--bg2); position: relative;
+  }
+  #voide-collection .pcard__media img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+    transition: transform .4s ease;
+  }
+  #voide-collection .pcard:hover .pcard__media img { transform: scale(1.05); }
+  #voide-collection .pcard__body {
+    padding: 20px 22px 24px;
+    flex: 1; display: flex; flex-direction: column;
+  }
+  #voide-collection .pcard__type {
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  #voide-collection .pcard__name {
+    font-family: var(--font-display); font-size: 20px; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  #voide-collection .pcard__price-row {
+    display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; margin-top: auto;
+  }
+  #voide-collection .pcard__price { font-size: 20px; font-weight: 700; color: var(--fg); }
+  #voide-collection .pcard__cta {
+    display: block; text-align: center;
+    background: var(--accent); color: #fff;
+    font-weight: 700; font-size: 14px;
+    border-radius: 12px; padding: 12px 20px;
+    text-decoration: none;
+    transition: filter .18s, transform .18s, box-shadow .18s;
+    box-shadow: 0 4px 15px rgba(255,0,52,0.2);
+  }
+  #voide-collection .pcard__cta:hover { 
+    filter: brightness(1.1); transform: translateY(-1px); 
+    box-shadow: 0 6px 20px rgba(255,0,52,0.4);
+  }
+  /* Pagination */
+  #voide-collection .pagination {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 64px; list-style: none; padding: 0;
+  }
+  #voide-collection .pagination a,
+  #voide-collection .pagination span {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--panel2); color: var(--fg);
+    text-decoration: none; font-weight: 600; font-size: 14px;
+    border: 1px solid var(--stroke);
+    transition: all 0.2s;
+  }
+  #voide-collection .pagination a:hover {
+    border-color: var(--accent); color: var(--accent);
+  }
+  #voide-collection .pagination .current {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
