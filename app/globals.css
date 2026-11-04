@@ -17,6 +17,15 @@
   --page-pad:     28px;
 }
 html { scroll-behavior: smooth; }
+/* Page scrollbar in the site's colours: a dark red thumb on the page background, full red while held or hovered.
+   Chrome, Edge and Safari use the ::-webkit-scrollbar rules; Firefox can only take the two colours. */
+html::-webkit-scrollbar { width: 10px; }
+html::-webkit-scrollbar-track { background: var(--bg); box-shadow: inset 1px 0 0 var(--stroke); }
+html::-webkit-scrollbar-thumb { background: rgba(255,0,52,.45); border: 2px solid var(--bg); border-radius: 6px; }
+html::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:active { background: var(--accent); }
+@supports not selector(::-webkit-scrollbar) {
+  html { scrollbar-width: thin; scrollbar-color: rgba(255,0,52,.55) var(--bg); }
+}
 body {
   background: var(--bg);
   color: var(--fg);
@@ -30,13 +39,48 @@ img { max-width: 100%; display: block; }
 a { color: inherit; }
 button { font-family: inherit; cursor: pointer; }
 input, select, textarea { font-family: inherit; }
+/* A faint galaxy behind every page. The sky (dust stars, two soft glows, distant galaxies) stays put while the page scrolls;
+   the hazy red band with its denser stars (#voide-nebula) sits behind the top of the page and scrolls away with it.
+   The star tiles (public/images/stars-*.svg) have different sizes so they don't line up. */
 #voide-stars {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   background:
+    url(/images/stars-a.svg),
     radial-gradient(ellipse at 20% 50%, rgba(255,0,52,.04) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 10%, rgba(60,80,255,.04) 0%, transparent 50%);
 }
-/* Red stars: drift up with CSS animations (no per-frame script). public/theme/stars.js adds them and handles hover and click. */
+/* Each galaxy is tilted and flattened by its inline transform, and turns slowly within that plane (arms trailing). */
+#voide-stars .gx { position: absolute; opacity: .75; }
+#voide-stars .gx i {
+  position: absolute; inset: 0;
+  background: center / contain no-repeat;
+  animation: gxSpin linear infinite;
+}
+@keyframes gxSpin { to { transform: rotate(-360deg); } }
+@media (max-width: 860px) { #voide-stars .gx { scale: .6; } }
+/* Covers the first screen only (svh so it never makes a short page scroll), fading out towards its bottom. */
+#voide-nebula {
+  position: absolute; left: 0; top: 0; z-index: 0;
+  width: 100%; height: 100svh;
+  overflow: hidden; pointer-events: none;
+  -webkit-mask-image: linear-gradient(#000 65%, transparent);
+  mask-image: linear-gradient(#000 65%, transparent);
+}
+#voide-nebula::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  width: 170vmax; height: 50vmax;
+  translate: -50% -50%; rotate: -24deg;
+  background:
+    url(/images/stars-b.svg),
+    url(/images/stars-a.svg) 180px 90px,
+    radial-gradient(ellipse 30% 34% at 40% 54%, rgba(255,40,80,.07), transparent 70%),
+    radial-gradient(ellipse 26% 30% at 64% 45%, rgba(150,20,100,.06), transparent 70%),
+    radial-gradient(ellipse 50% 42% at 50% 50%, rgba(255,0,52,.045), transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 15%, transparent 72%);
+}
+/* Stars drift up with CSS animations (no per-frame script). public/theme/stars.js adds them and handles hover and click on the red ones. */
 #voide-redstars {
   position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
 }
@@ -54,6 +98,7 @@ input, select, textarea { font-family: inherit; }
   animation: rstarTwinkle ease-in-out infinite alternate;
   transition: box-shadow .25s ease, scale .25s ease;
 }
+#voide-redstars .rstar.is-white i { background: #fff; box-shadow: 0 0 4px 1px rgba(255,255,255,.3); }
 #voide-redstars .rstar.is-hover i { scale: 1.5; box-shadow: 0 0 12px 5px rgba(255,0,52,.65); }
 #voide-redstars .rstar.is-active i { visibility: hidden; }
 @keyframes rstarRise {
@@ -88,52 +133,87 @@ input, select, textarea { font-family: inherit; }
 .bh__code p { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .bh__code strong { display: block; font-size: 18px; letter-spacing: .16em; color: var(--accent); }
 .bh__code small { font-size: 12px; color: var(--fg); }
+.bh__code { animation: bhText .45s .8s ease-out both; }
+/* Black hole, back to front: glow, far half of the spinning disk, the hole with its ring of bent light, near half of the disk.
+   On opening, the clicked dot swells into a hot red ball, goes black from the centre out, then the disk unrolls from its sides.
+   Only transform and opacity animate, so it never repaints. The 80px box keeps the hole centred on the clicked star. */
 .bh__visual {
   position: relative;
   width: 80px;
   height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-style: preserve-3d;
 }
-.bh__ring {
-  position: absolute;
-  width: 80px; height: 80px;
+.bh__visual::before {
+  content: '';
+  position: absolute; inset: -60px;
   border-radius: 50%;
-  background: radial-gradient(circle at center,
-#000 0%,
-#0a0005 30%,
-rgba(255,0,52,.6) 60%,
-rgba(255,0,52,.1) 80%,
-transparent 100%);
-  animation: bhPulse 1.5s ease-in-out infinite;
+  background: radial-gradient(closest-side, rgba(255,0,52,.32), rgba(255,0,52,.1) 45%, transparent);
+  pointer-events: none;
+  animation: bhGlowIn .9s ease-out both, bhPulse 3s ease-in-out .9s infinite;
 }
-.bh__accretion {
-  position: absolute;
-  width: 140px;
-  height: 140px;
+.bh__hole {
+  position: absolute; inset: 15px;
   border-radius: 50%;
-  background: transparent;
-  border: 3px solid rgba(255,0,52,.2);
-  border-bottom-color: rgba(255,0,52,.9);
-  border-right-color: rgba(255,0,52,.6);
-  box-shadow: 0 0 16px 4px rgba(255,0,52,.3);
-  animation: diskSpin 1.4s linear infinite;
+  background: radial-gradient(circle, #ffe3e8, #ff3358 45%, #ff0034);
+  box-shadow: 0 0 0 1px rgba(255,150,165,.7), 0 0 8px 2px rgba(255,0,52,.9), 0 0 24px 6px rgba(255,0,52,.4);
+  animation: bhSwell .45s cubic-bezier(.3,0,.2,1) both;
 }
-@keyframes diskSpin {
-  0%   { transform: rotateX(72deg) rotateZ(0deg); }
-  100% { transform: rotateX(72deg) rotateZ(360deg); }
+/* The dark core, eating the red ball from the centre out. */
+.bh__hole::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: #000;
+  animation: bhGrow .3s .35s cubic-bezier(.5,0,.3,1) both;
 }
+/* The far side of the disk, bent up over the hole by its gravity. */
+.bh__hole::before {
+  content: '';
+  position: absolute; inset: -9px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, transparent 78%, rgba(255,110,130,.65) 84%, rgba(255,0,52,.25) 91%, transparent);
+  animation: bhFade .4s .6s both;
+}
+.bh__disk {
+  position: absolute; left: -35px; top: -35px;
+  width: 150px; height: 150px;
+  transform: rotate(-12deg) scale(1, .27);
+  animation: bhUnroll .55s .62s cubic-bezier(.2,.8,.3,1) both;
+  /* The side spinning towards us is brighter. */
+  -webkit-mask-image: linear-gradient(90deg, #000 30%, rgba(0,0,0,.5));
+  mask-image: linear-gradient(90deg, #000 30%, rgba(0,0,0,.5));
+}
+.bh__disk--front { top: 40px; height: 75px; overflow: hidden; transform-origin: 50% 0; }
+.bh__disk i {
+  position: absolute; left: 0; top: 0;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, transparent 44%, rgba(255,215,222,.95) 48%, transparent 58%),
+    conic-gradient(#ff2a50, #ff7d93, #e0002e, #ff3358, #ff99aa, #e6002f, #ff2a50, #ff6680, #d1002a, #ff2a50);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 44%, #000 48%, rgba(0,0,0,.55) 72%, transparent);
+  mask-image: radial-gradient(closest-side, transparent 44%, #000 48%, rgba(0,0,0,.55) 72%, transparent);
+  animation: bhSpin 5s linear infinite;
+}
+.bh__disk--front i { top: -75px; }
+@keyframes bhSwell {
+  from { transform: scale(.08); }
+  70%  { transform: scale(1.1); }
+}
+@keyframes bhGrow { from { transform: scale(0); } }
+@keyframes bhFade { from { opacity: 0; } }
+@keyframes bhUnroll { from { transform: rotate(-12deg) scale(0, .27); } }
+@keyframes bhGlowIn {
+  from { opacity: 0; transform: scale(.1); }
+  to   { opacity: .7; transform: scale(.94); }
+}
+@keyframes bhText {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes bhSpin { to { transform: rotate(360deg); } }
 @keyframes bhPulse {
-  0%, 100% {
-box-shadow: 0 0 0 2px rgba(255,0,52,.4), 0 0 20px 8px rgba(255,0,52,.3), 0 0 60px 20px rgba(255,0,52,.15);
-transform: scale(1);
-  }
-  50% {
-box-shadow: 0 0 0 3px rgba(255,0,52,.6), 0 0 30px 12px rgba(255,0,52,.4), 0 0 80px 28px rgba(255,0,52,.2);
-transform: scale(1.05);
-  }
+  0%, 100% { opacity: .7; transform: scale(.94); }
+  50%      { opacity: 1; transform: scale(1.04); }
 }
 .voide-page-width {
   max-width: var(--page-max);
@@ -200,10 +280,6 @@ transform: scale(1.05);
   transition: color .2s, border-color .2s;
 }
 .voide-btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
-.voide-chip {
-  font-size: 13px;
-  color: var(--muted);
-}
 main { position: relative; z-index: 2; }
 .skip-link {
   position: absolute; top: -999px; left: 0;

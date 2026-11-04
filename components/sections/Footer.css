@@ -1,5 +1,5 @@
 #voide-footer-footer {
-    background: rgba(8,9,11,.82);
+    background: rgba(8,9,11,.6);
     border-top: 1px solid var(--stroke);
     padding: 52px var(--page-pad) 28px;
     position: relative; z-index: 2;

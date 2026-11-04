@@ -6,14 +6,17 @@
   var HIT = 18; // px around a star that counts as on it
   function rand(a, b) { return Math.random() * (b - a) + a; }
   var stars = [];
-  var count = Math.max(2, Math.round((innerWidth * innerHeight) / 600000));
-  for (var i = 0; i < count; i++) {
+  var total = Math.max(20, Math.round((innerWidth * innerHeight) / 60000));
+  // About 3% of the stars are red, but always at least one to find; the white ones are scenery and can't be clicked.
+  var reds = Math.max(1, Math.round(total * 0.03));
+  for (var i = 0; i < total; i++) {
+    var red = i < reds;
     var s = document.createElement('span');
     var dot = document.createElement('i');
     var rise = (innerHeight + 20) / rand(8, 21); // seconds to cross the screen at 8–21 px/s
     var twinkle = rand(2, 5);
-    var size = rand(2.4, 4.4);
-    s.className = 'rstar';
+    var size = red ? rand(2.4, 4.4) : rand(1.2, 2.6);
+    s.className = red ? 'rstar' : 'rstar is-white';
     s.style.left = rand(0, 100) + '%';
     s.style.animationDuration = rise + 's';
     s.style.animationDelay = -rand(0, rise) + 's';
@@ -22,7 +25,7 @@
     dot.style.animationDelay = -rand(0, twinkle) + 's';
     s.appendChild(dot);
     field.appendChild(s);
-    stars.push(s);
+    if (red) stars.push(s);
   }
   // The stars sit behind the page content, so hover and click are worked out from the pointer position.
   function centre(el) { var r = el.getBoundingClientRect(); return { x: r.left, y: r.top }; }

@@ -11,35 +11,15 @@ export default function Story() {
               <p className="voide-section-label">
                 Our Philosophy
               </p>
-              <h2 className="voide-section-title">
-                The ever lingering scent
-              </h2>
               <p>
-                VOIDESCENT was born from a single belief: your car is an extension of your identity. The music you play, the route you take — all of it tells a story. The scent you choose should too.
+                Most car air fresheners are made to be thrown away. A flimsy card with a sharp, cheap smell that fades within days.
               </p>
               <p>
-                We make car hanger fragrances with concentrated fragrance oil, inspired by the mystery and beauty of the cosmos. Each bottle is a small scent experience — clean, lingering and easy to love.
+                Ours are made to last. Concentrated fragrance oil in a small glass bottle, with a wooden cap that slowly soaks it up. It fits any car and lasts four to six weeks. When it starts to fade, tilt the bottle for a few seconds and the scent comes back.
               </p>
               <p>
-                Three scents, three moods: Nebula is soft and floral, Heavens is creamy sandalwood, and Descent is sweet coffee and vanilla. Pick the one that fits you — or get all three in the bundle.
+                We currently offer three scents hand crafted by our team: Nebula is soft and floral, Heavens is creamy sandalwood, and Descent is sweet coffee and vanilla. Every scent was made with a customer first mindset, cutting corners is not something we do.
               </p>
-              <div className="story__chips">
-                <span className="voide-chip">
-                  ✦ Soft florals
-                </span>
-                <span className="voide-chip">
-                  ✦ Creamy sandalwood
-                </span>
-                <span className="voide-chip">
-                  ✦ Coffee & vanilla
-                </span>
-                <span className="voide-chip">
-                  ✦ 4–6 week longevity
-                </span>
-                <span className="voide-chip">
-                  ✦ Fragrance oil formula
-                </span>
-              </div>
             </div>
           </div>
         </div>

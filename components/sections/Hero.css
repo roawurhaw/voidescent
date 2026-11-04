@@ -13,6 +13,9 @@
     opacity: 0.7;
     z-index: 0;
     pointer-events: none;
+    /* The blobs drift past the hero's edges; fade them out before the edge instead of cutting them off there. */
+    -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 72%, transparent);
+    mask-image: linear-gradient(transparent, #000 12%, #000 72%, transparent);
   }
   #vs-fluid .vs-blob {
     position: absolute;
@@ -21,7 +24,7 @@
   }
   #voide-hero .vs-particles {
     position: absolute;
-    inset: 0;
+    inset: 0 0 -120px; /* one drift step taller, so the dots never run out at the bottom */
     pointer-events: none;
     opacity: 0.14;
     background-image: radial-gradient(var(--accent, #ff0034) 1px, transparent 1px);
@@ -109,7 +112,6 @@
     width: 100%;
     max-width: 480px;
     margin: 0 auto;
-    animation: voideFloat 6s ease-in-out infinite;
   }
   #voide-hero .hero__media img {
     width: 100%;
@@ -120,10 +122,6 @@
     filter: drop-shadow(0 30px 60px rgba(0,0,0,.7));
   }
   /* Keyframes */
-  @keyframes voideFloat {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-14px); }
-  }
   @keyframes vsIdle {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-4px) scale(1.01); }
